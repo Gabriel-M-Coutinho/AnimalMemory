@@ -79,12 +79,25 @@ text = "Selecione uma carta"
 [node name="HSeparator" type="HSeparator" parent="HBoxContainer/DetailPanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/DetailPanel/VBoxContainer"]
+[node name="ContentHBox" type="HBoxContainer" parent="HBoxContainer/DetailPanel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="ImageContainer" type="Control" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ImageContainer"]
+position = Vector2(75, 120)
+scale = Vector2(0.4, 0.4)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
 horizontal_scroll_mode = 0
 
-[node name="DetailLabel" type="RichTextLabel" parent="HBoxContainer/DetailPanel/VBoxContainer/ScrollContainer"]
+[node name="DetailLabel" type="RichTextLabel" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

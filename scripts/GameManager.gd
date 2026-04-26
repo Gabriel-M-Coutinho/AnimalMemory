@@ -1,5 +1,10 @@
 extends Node
 
+func _ready():
+	# Força a orientação horizontal se o dispositivo suportar
+	if DisplayServer.has_feature(DisplayServer.FEATURE_ORIENTATION):
+		DisplayServer.screen_set_orientation(DisplayServer.SCREEN_LANDSCAPE)
+
 var game_difficulty: String = "easy"
 var cards_to_spawn: int = 4
 

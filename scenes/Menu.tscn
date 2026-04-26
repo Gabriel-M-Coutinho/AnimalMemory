@@ -74,6 +74,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Ver Codex"
 
+[node name="Exit" type="Button" parent="VBoxContainer" unique_id=20250426]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Sair"
+
 
 [node name="Settings" parent="." instance=ExtResource("4_settings")]
 
@@ -83,3 +88,4 @@ text = "Ver Codex"
 [connection signal="pressed" from="VBoxContainer/Medium" to="." method="_on_medium_pressed"]
 [connection signal="pressed" from="VBoxContainer/Hard" to="." method="_on_hard_pressed"]
 [connection signal="pressed" from="VBoxContainer/Codex" to="." method="_on_codex_pressed"]
+[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]

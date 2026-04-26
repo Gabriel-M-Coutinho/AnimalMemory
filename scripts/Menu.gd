@@ -14,3 +14,6 @@ func _on_hard_pressed():
 
 func _on_codex_pressed():
 	SceneManager.goto_scene("res://scenes/Codex.tscn")
+
+func _on_exit_pressed():
+	get_tree().quit()

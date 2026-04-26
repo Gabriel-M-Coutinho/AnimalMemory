@@ -1,14 +1,17 @@
 extends Control
 
 @onready var item_list = $HBoxContainer/ItemList
-@onready var detail_label = $HBoxContainer/DetailPanel/VBoxContainer/ScrollContainer/DetailLabel
+@onready var detail_label = $HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ScrollContainer/DetailLabel
 @onready var card_name_label = $HBoxContainer/DetailPanel/VBoxContainer/CardName
+@onready var animated_sprite = $HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ImageContainer/AnimatedSprite2D
 
 func _ready():
 	_populate_list()
 	_fix_hover_style()
 	item_list.item_selected.connect(_on_item_list_item_selected)
 	MusicManager.play_codex_music()
+	# Esconde o sprite até algo ser selecionado
+	animated_sprite.visible = false
 
 func _fix_hover_style():
 	# Sobrescreve o fundo do hover com azul semitransparente,
@@ -36,6 +39,19 @@ func _on_item_list_item_selected(index):
 
 	if card_data:
 		card_name_label.text = card_data.get("name", "Desconhecido")
+		
+		# Atualiza a animação
+		var sprite_frames = CardDatabase.get_sprite_frames(selected_id)
+		if sprite_frames:
+			animated_sprite.sprite_frames = sprite_frames
+			animated_sprite.visible = true
+			if sprite_frames.has_animation("movement"):
+				animated_sprite.play("movement")
+			else:
+				animated_sprite.play("idle")
+		else:
+			animated_sprite.visible = false
+			
 		var details = "[color=#0055aa]Espécie:[/color] %s\n" % card_data.get("species", "???")
 		details += "[color=#0055aa]Nome Científico:[/color] %s\n" % card_data.get("scientific_name", "???")
 		details += "[color=#0055aa]Onde vive:[/color] %s\n\n" % card_data.get("habitat", "???")

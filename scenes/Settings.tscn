@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/Settings.gd" id="1_settings_script"]
+[ext_resource type="Texture2D" path="res://sprites/music_note.svg" id="2_music_icon"]
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -25,9 +26,9 @@ offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_font_sizes/font_size = 30
-text = "⚙️"
+icon = ExtResource("2_music_icon")
 flat = true
+expand_icon = true
 
 [node name="SettingsPanel" type="ColorRect" parent="."]
 visible = false
