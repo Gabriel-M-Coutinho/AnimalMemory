@@ -1,0 +1,140 @@
+{
+  "cards": [
+	{
+	  "id": "gato",
+	  "name": "Gato",
+	  "species": "Felino",
+	  "scientific_name": "Felis catus",
+	  "habitat": "Casas e ruas",
+	  "curiosidade": "Os gatos ronronam quando estão felizes e conseguem enxergar muito bem no escuro, como se tivessem óculos de visão noturna!",
+	  "super_poder": "Eles quase sempre conseguem cair de pé e podem pular muito alto, até 6 vezes o tamanho deles!",
+	  "o_que_gosta": "Adoram tirar longas sonecas no sol, brincar de caçar bolinhas e ganhar carinho atrás das orelhas.",
+	  "sprite": "res://sprites/cat.png",
+	  "frame_width": 345,
+	  "frame_height": 522,
+	  "animations": {
+		"idle":     { "start_frame": 0, "frames": 1, "fps": 1,   "loop": true },
+		"movement": { "start_frame": 0, "frames": 198, "fps": 25, "loop": true }
+	  }
+	},
+	{
+	  "id": "cachorro",
+	  "name": "Cachorro",
+	  "species": "Canino",
+	  "scientific_name": "Canis familiaris",
+	  "habitat": "Casas, parques, ruas",
+	  "curiosidade": "Os cachorros têm um olfato milhões de vezes mais apurado que o dos humanos! Eles conseguem detectar cheiros a quilômetros de distância.",
+	  "super_poder": "Eles conseguem correr muito rápido, latir bem alto para avisar quando algo estranho acontece e têm uma audição super sensível.",
+	  "o_que_gosta": "Adoram correr atrás de bolinhas, receber cafuné na barriga, passear e brincar de buscar com seus donos.",
+	  "sprite": "res://sprites/cachorro.png",
+	  "frame_width": 345,
+	  "frame_height": 522,
+	  "animations": {
+		"idle":     { "start_frame": 0, "frames": 1, "fps": 1,   "loop": true },
+		"movement": { "start_frame": 0, "frames": 210, "fps": 25, "loop": true }
+	  }
+	},
+	{
+		"id": "elefante",
+		"name": "Elefante",
+		"species": "Mamífero",
+		"scientific_name": "Loxodonta africana",
+		"habitat": "Savanas e florestas",
+		"curiosidade": "Os elefantes são os maiores animais terrestres do mundo e conseguem comunicar uns com os outros através de sons ultrassônicos que os humanos não conseguem ouvir!",
+		"super_poder": "Eles têm uma tromba super forte e flexível que usam para respirar, cheirar, beber água e até mesmo para pegar coisas pequenas no chão.",
+		"o_que_gosta": "Adoram tomar banho de lama para se proteger do sol, comer frutas e plantas e ficar pertinho da família.",
+		"sprite": "res://sprites/elefante.png",
+		"frame_width": 345,
+		"frame_height": 522,
+		"animations": {
+			"idle":     { "start_frame": 0, "frames": 1, "fps": 1,   "loop": true },
+			"movement": { "start_frame": 0, "frames": 166, "fps": 25, "loop": true }
+		}
+	}, 
+	{
+		"id": "pato",
+		"name": "Pato",
+		"species": "Ave",
+		"scientific_name": "Anas platyrhynchos",
+		"habitat": "Lagos, rios e lagoas",
+		"curiosidade": "Os patos conseguem nadar muito bem porque suas patas são como remos! Além disso, eles têm uma penugem especial que os mantém aquecidos mesmo na água fria.",
+		"super_poder": "Eles conseguem mergulhar para procurar comida no fundo da água, voar para longe quando precisam fugir de perigo e têm um bico perfeito para filtrar a água e encontrar insetos.",
+		"o_que_gosta": "Adoram nadar em bandos, ciscar na grama atrás de insetos e sementes, e tomar sol depois de um bom mergulho.",
+		"sprite": "res://sprites/pato.png",
+		"frame_width": 345,
+		"frame_height": 522,
+		"animations": {
+			"idle":     { "start_frame": 0, "frames": 1, "fps": 1,   "loop": true },
+			"movement": { "start_frame": 0, "frames": 106, "fps": 25, "loop": true }
+		}
+	},
+	{
+		"id": "leao",
+		"name": "Leão",
+		"species": "Felino",
+		"scientific_name": "Panthera leo",
+		"habitat": "Savanas africanas",
+		"curiosidade": "O rugido de um leão adulto pode ser ouvido a até 8 quilômetros de distância! Eles são conhecidos como os 'Reis da Selva'.",
+		"super_poder": "Têm uma força incrível, garras afiadas e uma juba magnífica que protege o pescoço durante lutas.",
+		"o_que_gosta": "Adoram descansar na sombra, caçar em grupo (especialmente as leoas) e proteger seu bando.",
+		"sprite": "res://sprites/leao.png",
+		"frame_width": 345,
+		"frame_height": 522,
+		"animations": {
+			"idle":     { "start_frame": 0, "frames": 1, "fps": 1,   "loop": true },
+			"movement": { "start_frame": 0, "frames": 198, "fps": 25, "loop": true }
+		}
+	},
+	{
+		"id": "beijaflor",
+		"name": "Beija-flor",
+		"species": "Ave",
+		"scientific_name": "Trochilidae",
+		"habitat": "Jardins e florestas",
+		"curiosidade": "Eles são os únicos pássaros que conseguem voar para trás e até ficar parados no ar, batendo as asas muito, muito rápido!",
+		"super_poder": "Têm uma velocidade incrível e um bico longo e fino perfeito para sugar o néctar das flores mais profundas.",
+		"o_que_gosta": "Adoram flores coloridas, beber néctar e voar entre as plantas em busca de comida.",
+		"sprite": "res://sprites/beijaflor.png",
+		"frame_width": 345,
+		"frame_height": 522,
+		"animations": {
+			"idle":     { "start_frame": 0, "frames": 1, "fps": 1,   "loop": true },
+			"movement": { "start_frame": 0, "frames": 100, "fps": 25, "loop": true }
+		}
+	},
+	{
+		"id": "abelha",
+		"name": "Abelha",
+		"species": "Inseto",
+		"scientific_name": "Anthophila",
+		"habitat": "Jardins e colmeias",
+		"curiosidade": "Elas visitam milhares de flores por dia para coletar néctar e pólen, ajudando a natureza a crescer!",
+		"super_poder": "Conseguem voar carregando muito peso e se comunicam através de uma 'dança' especial.",
+		"o_que_gosta": "Adoram flores coloridas, sol e trabalhar em equipe na colmeia.",
+		"sprite": "res://sprites/abelha.png",
+		"frame_width": 345,
+		"frame_height": 522,
+		"animations": {
+			"idle":     { "start_frame": 0, "frames": 1, "fps": 1,   "loop": true },
+			"movement": { "start_frame": 0, "frames": 156, "fps": 25, "loop": true }
+		}
+	},
+	{
+		"id": "joaninha",
+		"name": "Joaninha",
+		"species": "Inseto",
+		"scientific_name": "Coccinellidae",
+		"habitat": "Jardins e hortas",
+		"curiosidade": "Suas cores vibrantes e bolinhas pretas avisam os predadores que elas não são um bom lanche!",
+		"super_poder": "São ótimas ajudantes dos jardineiros, pois protegem as plantas comendo pequenos insetos que as prejudicam.",
+		"o_que_gosta": "Adoram caminhar sobre folhas verdes e tomar sol em dias calmos.",
+		"sprite": "res://sprites/joaninha.png",
+		"frame_width": 345,
+		"frame_height": 522,
+		"animations": {
+			"idle":     { "start_frame": 0, "frames": 1, "fps": 1,   "loop": true },
+			"movement": { "start_frame": 0, "frames": 150, "fps": 25, "loop": true }
+		}
+	}
+  ]
+}

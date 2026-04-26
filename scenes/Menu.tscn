@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://cne2dcwugwmgm"]
+
+[ext_resource type="Script" uid="uid://buv55fvp86h4m" path="res://scripts/Menu.gd" id="1_menu_script"]
+[ext_resource type="Texture2D" uid="uid://cg30isirqic82" path="res://sprites/background_final.jpg" id="2_11y2r"]
+[ext_resource type="PackedScene" path="res://scenes/Overlay.tscn" id="3_overlay"]
+[ext_resource type="PackedScene" path="res://scenes/Settings.tscn" id="4_settings"]
+
+[node name="Menu" type="Control" unique_id=507254978]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=128970857]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_11y2r")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="." unique_id=1985762837]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.05
+anchor_right = 0.9
+anchor_bottom = 0.2
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "Jogo da Memória"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=575143252]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Easy" type="Button" parent="VBoxContainer" unique_id=1603089341]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Fácil (4 Cartas)"
+
+[node name="Medium" type="Button" parent="VBoxContainer" unique_id=1382314084]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Médio (8 Cartas)"
+
+[node name="Hard" type="Button" parent="VBoxContainer" unique_id=137846022]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Difícil (16 Cartas)"
+
+[node name="Codex" type="Button" parent="VBoxContainer" unique_id=1101238231]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Ver Codex"
+
+
+[node name="Settings" parent="." instance=ExtResource("4_settings")]
+
+[node name="Overlay" parent="." unique_id=1483548629 instance=ExtResource("3_overlay")]
+
+[connection signal="pressed" from="VBoxContainer/Easy" to="." method="_on_easy_pressed"]
+[connection signal="pressed" from="VBoxContainer/Medium" to="." method="_on_medium_pressed"]
+[connection signal="pressed" from="VBoxContainer/Hard" to="." method="_on_hard_pressed"]
+[connection signal="pressed" from="VBoxContainer/Codex" to="." method="_on_codex_pressed"]

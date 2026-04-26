@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://1asggtywludh"]
+
+[ext_resource type="Script" uid="uid://lgqm37mjwcy7" path="res://scripts/card.gd" id="1_script"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5i27o"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"cardback",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_ktuci"]
+resource_name = "idle"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kg30u"]
+_data = {
+&"idle": SubResource("Animation_ktuci")
+}
+
+[node name="Card" type="Control" unique_id=87106677]
+custom_minimum_size = Vector2(100, 140)
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_script")
+
+[node name="Animations" type="AnimatedSprite2D" parent="." unique_id=301693604]
+position = Vector2(50, 75.00001)
+scale = Vector2(0.29012683, 0.2901269)
+sprite_frames = SubResource("SpriteFrames_5i27o")
+animation = &"cardback"
+
+[node name="Animator" type="AnimationPlayer" parent="." unique_id=1753425931]
+libraries/ = SubResource("AnimationLibrary_kg30u")

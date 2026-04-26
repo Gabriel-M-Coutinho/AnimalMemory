@@ -1,0 +1,12 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+/dist/
+
+# Build artifacts
+*.apk
+*.idsig
+*.pck
+*.x86_64
+*.x86
+*.zip

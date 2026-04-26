@@ -1,0 +1,15 @@
+[remap]
+
+importer="import_gif_to_sprite_frames"
+type="SpriteFrames"
+uid="uid://w8dx6wxhqycr"
+path="res://.godot/imported/gatinho_floresta_shine.gif-365a55e0c6296dd873f74448742ad4b5.tres"
+
+[deps]
+
+source_file="res://gatinho_floresta_shine.gif"
+dest_files=["res://.godot/imported/gatinho_floresta_shine.gif-365a55e0c6296dd873f74448742ad4b5.tres"]
+
+[params]
+
+frames_per_second=30

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://nfp850fytxwu"]
+
+[ext_resource type="Script" uid="uid://dqaj48t5hfruc" path="res://scripts/test_game.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://b4yeapf1nvdog" path="res://scenes/memory_game.tscn" id="2_memory_game"]
+
+[node name="TestGame" type="Node2D" unique_id=1298797006]
+script = ExtResource("1_script")
+
+[node name="MemoryGame" parent="." unique_id=2129929136 instance=ExtResource("2_memory_game")]
+offset_right = 1152.0
+offset_bottom = 648.0
