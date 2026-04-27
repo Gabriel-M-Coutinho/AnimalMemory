@@ -4,9 +4,9 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vhs"]
 shader = ExtResource("1_shader")
-shader_parameter/scanlines_opacity = 0.1
+shader_parameter/scanlines_opacity = 0.05
 shader_parameter/scanlines_width = 0.25
-shader_parameter/grille_opacity = 0.1
+shader_parameter/grille_opacity = 0.05
 shader_parameter/resolution = Vector2(640, 480)
 shader_parameter/pixelate = false
 shader_parameter/roll = false
@@ -14,16 +14,16 @@ shader_parameter/roll_speed = 2.0
 shader_parameter/roll_size = 15.0
 shader_parameter/roll_variation = 1.8
 shader_parameter/distort_intensity = 0.01
-shader_parameter/noise_opacity = 0.05
+shader_parameter/noise_opacity = 0.03
 shader_parameter/noise_speed = 2.0
-shader_parameter/static_noise_intensity = 0.02
-shader_parameter/aberration = 0.005
-shader_parameter/brightness = 1.1
+shader_parameter/static_noise_intensity = 0.01
+shader_parameter/aberration = 0.002
+shader_parameter/brightness = 1.05
 shader_parameter/discolor = true
-shader_parameter/warp_amount = 0.02
+shader_parameter/warp_amount = 0.005
 shader_parameter/clip_warp = false
-shader_parameter/vignette_intensity = 0.2
-shader_parameter/vignette_opacity = 0.3
+shader_parameter/vignette_intensity = 0.15
+shader_parameter/vignette_opacity = 0.15
 
 [node name="Overlay" type="CanvasLayer"]
 layer = 128
