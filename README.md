@@ -18,7 +18,7 @@ Este é um jogo de memória clássico, desenvolvido com a engine **Godot 4**, fo
 
 ## 🔗 Links Úteis
 
-- [Link para Download do Jogo](https://github.com/kaiqsou/AnimalMemory/releases)
+- [Link para Download do Jogo](https://github.com/Gabriel-M-Coutinho/AnimalMemory/releases)
 
 ---
 *Desenvolvido por [Gabriel M. Coutinho](https://github.com/Gabriel-M-Coutinho) e [Kaique Onencio](https://github.com/kaiqsou)*
