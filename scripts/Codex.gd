@@ -8,7 +8,9 @@ extends Control
 func _ready():
 	_populate_list()
 	_fix_hover_style()
-	item_list.item_selected.connect(_on_item_list_item_selected)
+	# This signal is also connected in the scene file; guard against double-connect.
+	if not item_list.item_selected.is_connected(_on_item_list_item_selected):
+		item_list.item_selected.connect(_on_item_list_item_selected)
 	MusicManager.play_codex_music()
 	# Esconde o sprite até algo ser selecionado
 	animated_sprite.visible = false

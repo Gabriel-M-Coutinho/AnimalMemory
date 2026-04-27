@@ -1,0 +1,157 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/CodexAlbum.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://sprites/background_final.jpg" id="2_bg_image"]
+[ext_resource type="PackedScene" path="res://scenes/Overlay.tscn" id="3_overlay"]
+[ext_resource type="PackedScene" path="res://scenes/Settings.tscn" id="4_settings"]
+
+[node name="CodexAlbum" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg_image")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -180.0
+offset_top = 20.0
+offset_right = 180.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 28
+text = "Álbum do Codex"
+horizontal_alignment = 1
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.14
+anchor_right = 0.95
+anchor_bottom = 0.86
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Grid" type="GridContainer" parent="Panel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+columns = 4
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+
+[node name="Back" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -80.0
+offset_right = 60.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Voltar"
+
+[node name="DetailPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="DetailPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DetailPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CardName" type="Label" parent="DetailPanel/Margin/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Carta"
+horizontal_alignment = 1
+
+[node name="ProgressLabel" type="Label" parent="DetailPanel/Margin/VBoxContainer"]
+layout_mode = 2
+text = "Encontrado: 0x"
+horizontal_alignment = 1
+
+[node name="ContentHBox" type="HBoxContainer" parent="DetailPanel/Margin/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="ImageContainer" type="Control" parent="DetailPanel/Margin/VBoxContainer/ContentHBox"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="DetailPanel/Margin/VBoxContainer/ContentHBox/ImageContainer"]
+position = Vector2(90, 140)
+scale = Vector2(0.5, 0.5)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="DetailPanel/Margin/VBoxContainer/ContentHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="DetailLabel" type="RichTextLabel" parent="DetailPanel/Margin/VBoxContainer/ContentHBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = ""
+fit_content = true
+autowrap_mode = 2
+
+[node name="CloseDetail" type="Button" parent="DetailPanel/Margin/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(220, 52)
+text = "Fechar"
+
+[node name="Settings" parent="." instance=ExtResource("4_settings")]
+
+[node name="Overlay" parent="." instance=ExtResource("3_overlay")]
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="DetailPanel/Margin/VBoxContainer/CloseDetail" to="." method="_on_close_detail_pressed"]

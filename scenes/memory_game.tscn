@@ -60,6 +60,35 @@ theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="TimerLabel" type="Label" parent="." unique_id=887265114]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 70.0
+offset_right = -20.0
+offset_bottom = 110.0
+grow_horizontal = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 24
+text = "Tempo: 30"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="HintButton" type="Button" parent="." unique_id=1220034015]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 115.0
+offset_right = -20.0
+offset_bottom = 155.0
+grow_horizontal = 0
+text = "Dica (5s)"
+
 [node name="VictoryPanel" type="ColorRect" parent="." unique_id=311711938]
 visible = false
 layout_mode = 1
@@ -120,6 +149,54 @@ offset_bottom = 60.0
 grow_horizontal = 0
 text = "Sair"
 
+[node name="LosePanel" type="ColorRect" parent="." unique_id=1957266334]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.588235)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LosePanel" unique_id=375973821]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Label" type="Label" parent="LosePanel/VBoxContainer" unique_id=1784578584]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "TEMPO ESGOTADO!"
+horizontal_alignment = 1
+
+[node name="SubLabel" type="Label" parent="LosePanel/VBoxContainer" unique_id=1022493617]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Tente novamente."
+horizontal_alignment = 1
+
+[node name="RetryButton" type="Button" parent="LosePanel/VBoxContainer" unique_id=1530959481]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "Jogar Novamente"
+
+[node name="MenuButton" type="Button" parent="LosePanel/VBoxContainer" unique_id=1741878348]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "Menu Principal"
+
 [node name="Settings" parent="." instance=ExtResource("5_settings")]
 
 [node name="Overlay" parent="." unique_id=1228866463 instance=ExtResource("4_overlay")]
@@ -127,3 +204,6 @@ text = "Sair"
 [connection signal="pressed" from="VictoryPanel/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="VictoryPanel/VBoxContainer/MenuButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="LosePanel/VBoxContainer/RetryButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="LosePanel/VBoxContainer/MenuButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="HintButton" to="." method="_on_hint_button_pressed"]

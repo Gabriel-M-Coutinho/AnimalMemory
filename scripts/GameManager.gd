@@ -7,6 +7,7 @@ func _ready():
 
 var game_difficulty: String = "easy"
 var cards_to_spawn: int = 4
+var time_limit_seconds: float = 30.0
 
 func set_difficulty(difficulty: String):
 	game_difficulty = difficulty

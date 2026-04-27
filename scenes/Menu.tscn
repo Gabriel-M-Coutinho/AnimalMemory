@@ -74,6 +74,16 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Ver Codex"
 
+[node name="Ranking" type="Button" parent="VBoxContainer" unique_id=1523430819]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Ranking"
+
+[node name="Achievements" type="Button" parent="VBoxContainer" unique_id=80211377]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Conquistas"
+
 [node name="Exit" type="Button" parent="VBoxContainer" unique_id=20250426]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
@@ -88,4 +98,6 @@ text = "Sair"
 [connection signal="pressed" from="VBoxContainer/Medium" to="." method="_on_medium_pressed"]
 [connection signal="pressed" from="VBoxContainer/Hard" to="." method="_on_hard_pressed"]
 [connection signal="pressed" from="VBoxContainer/Codex" to="." method="_on_codex_pressed"]
+[connection signal="pressed" from="VBoxContainer/Ranking" to="." method="_on_ranking_pressed"]
+[connection signal="pressed" from="VBoxContainer/Achievements" to="." method="_on_achievements_pressed"]
 [connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]

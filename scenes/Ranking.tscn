@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://ddp3uw0bjsl0t"]
+
+[ext_resource type="Script" path="res://scripts/Ranking.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cg30isirqic82" path="res://sprites/background_final.jpg" id="2_bg"]
+[ext_resource type="PackedScene" path="res://scenes/Overlay.tscn" id="3_overlay"]
+[ext_resource type="PackedScene" path="res://scenes/Settings.tscn" id="4_settings"]
+
+[node name="Ranking" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -200.0
+offset_right = 260.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Ranking"
+horizontal_alignment = 1
+
+[node name="DifficultyRow" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="DifficultyLabel" type="Label" parent="Panel/VBoxContainer/DifficultyRow"]
+layout_mode = 2
+text = "Dificuldade:"
+
+[node name="DifficultyOption" type="OptionButton" parent="Panel/VBoxContainer/DifficultyRow"]
+layout_mode = 2
+
+[node name="Entries" type="VBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Back" type="Button" parent="Panel/VBoxContainer/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(180, 52)
+text = "Voltar"
+
+[node name="Reset" type="Button" parent="Panel/VBoxContainer/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(180, 52)
+text = "Limpar Ranking"
+
+[node name="Settings" parent="." instance=ExtResource("4_settings")]
+
+[node name="Overlay" parent="." instance=ExtResource("3_overlay")]
+
+[connection signal="item_selected" from="Panel/VBoxContainer/DifficultyRow/DifficultyOption" to="." method="_on_difficulty_option_item_selected"]
+[connection signal="pressed" from="Panel/VBoxContainer/Buttons/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Buttons/Reset" to="." method="_on_reset_pressed"]

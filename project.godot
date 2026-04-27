@@ -11,16 +11,20 @@ config_version=5
 [application]
 
 config/name="memoria"
-run/main_scene="res://scenes/Menu.tscn"
+run/main_scene="res://scenes/NameEntry.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
+AppSettings="*res://scripts/AppSettings.gd"
 CardDatabase="*res://scripts/card_database.gd"
 GameManager="*res://scripts/GameManager.gd"
 MusicManager="*res://scripts/MusicManager.gd"
 Overlay="*res://scenes/Overlay.tscn"
+PlayerContext="*res://scripts/PlayerContext.gd"
+ProgressManager="*res://scripts/ProgressManager.gd"
+AchievementToast="*res://scenes/AchievementToast.tscn"
 SceneManager="*res://scripts/SceneManager.gd"
 
 [display]
