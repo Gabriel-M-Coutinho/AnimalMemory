@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dxummog41kkqx"
-path="res://.godot/imported/crown.svg-72d572ae92bcc9bb4e5ca7254b1acb2e.ctex"
+uid="uid://b6df4my10fciv"
+path="res://.godot/imported/logout.svg-ed122d046ac6038a20e939d8c3d9ef2c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/crown.svg"
-dest_files=["res://.godot/imported/crown.svg-72d572ae92bcc9bb4e5ca7254b1acb2e.ctex"]
+source_file="res://sprites/logout.svg"
+dest_files=["res://.godot/imported/logout.svg-ed122d046ac6038a20e939d8c3d9ef2c.ctex"]
 
 [params]
 

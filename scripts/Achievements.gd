@@ -3,6 +3,8 @@ extends Control
 @onready var list: VBoxContainer = $Panel/VBoxContainer/ScrollContainer/List
 
 func _ready() -> void:
+	if MusicManager.has_method("play_achievements_music"):
+		MusicManager.play_achievements_music()
 	_refresh()
 
 func _refresh() -> void:
@@ -10,26 +12,25 @@ func _refresh() -> void:
 		c.queue_free()
 
 	var def_icon := load("res://icon.svg") as Texture2D
-	var star_icon := load("res://sprites/achievement_star.jpg") as Texture2D
-	var medal_icon := load("res://sprites/achievement_medal.jpg") as Texture2D
-	var trophy_icon := load("res://sprites/achievement_trophy.jpg") as Texture2D
-	var crown_icon := load("res://sprites/achievement_crown.jpg") as Texture2D
-	var brain_icon := load("res://sprites/achievement_brain.jpg") as Texture2D
+	var star_icon := load("res://sprites/star.svg") as Texture2D
+	var medal_icon := load("res://sprites/medal.svg") as Texture2D
+	var trophy_icon := load("res://sprites/trophy.svg") as Texture2D
+	var crown_icon := load("res://sprites/crown.svg") as Texture2D
+	var brain_icon := load("res://sprites/star.svg") as Texture2D
 
-	_add_title("Conquistas gerais")
+
 	var wins := ProgressManager.get_total_wins()
 	_add_check("Primeira vitória", wins >= 1, "%d/1" % wins, star_icon)
 	_add_check("5 vitórias", wins >= 5, "%d/5" % wins, medal_icon)
 	_add_check("10 vitórias", wins >= 10, "%d/10" % wins, trophy_icon)
 
 	_add_spacer()
-	_add_title("Sem usar dica")
 	var no_hint := ProgressManager.get_wins_no_hint()
 	_add_check("Ganhar sem dica (1x)", no_hint >= 1, "%d/1" % no_hint, brain_icon)
 	_add_check("Ganhar sem dica (5x)", no_hint >= 5, "%d/5" % no_hint, brain_icon)
 
 	_add_spacer()
-	_add_title("Colecionáveis (por animal)")
+	_add_title("Colecionáveis")
 	var ids := CardDatabase.get_all_ids()
 	ids.sort()
 	for id in ids:
@@ -51,8 +52,6 @@ func _refresh() -> void:
 			name = str(id)
 		var count: int = ProgressManager.get_card_count(id)
 		var milestone_icon = tex
-		if count >= 1:
-			milestone_icon = load("res://sprites/milestone_bronze.jpg")
 		_add_progress("%s — %d/10" % [name, count], count >= 10, milestone_icon if milestone_icon else def_icon)
 
 func _add_title(text: String) -> void:
@@ -64,8 +63,8 @@ func _add_title(text: String) -> void:
 
 func _add_check(text: String, ok: bool, progress: String, icon: Texture2D = null) -> void:
 	var hbox := HBoxContainer.new()
-	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	hbox.add_theme_constant_override("separation", 10)
+	hbox.alignment = BoxContainer.ALIGNMENT_BEGIN
+	hbox.add_theme_constant_override("separation", 15)
 	
 	var tex_rect := TextureRect.new()
 	tex_rect.custom_minimum_size = Vector2(64, 64)
@@ -74,22 +73,24 @@ func _add_check(text: String, ok: bool, progress: String, icon: Texture2D = null
 	if icon:
 		tex_rect.texture = icon
 	if not ok:
-		tex_rect.modulate = Color(0.2, 0.2, 0.2, 1.0)
+		tex_rect.modulate = Color(1.0, 1.0, 1.0, 0.3)
 	hbox.add_child(tex_rect)
 	
 	var lbl := Label.new()
 	lbl.add_theme_font_size_override("font_size", 22)
 	lbl.text = ("%s  (%s)" % [text, progress]) if not ok else ("%s  (OK)" % text)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	if not ok:
-		lbl.modulate = Color(0.7, 0.7, 0.7, 1.0)
+		lbl.modulate = Color(1.0, 1.0, 1.0, 0.5)
 	hbox.add_child(lbl)
 	
 	list.add_child(hbox)
 
 func _add_progress(text: String, ok: bool, icon: Texture2D = null) -> void:
 	var hbox := HBoxContainer.new()
-	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	hbox.add_theme_constant_override("separation", 10)
+	hbox.alignment = BoxContainer.ALIGNMENT_BEGIN
+	hbox.add_theme_constant_override("separation", 15)
 	
 	var tex_rect := TextureRect.new()
 	tex_rect.custom_minimum_size = Vector2(64, 64)
@@ -98,14 +99,16 @@ func _add_progress(text: String, ok: bool, icon: Texture2D = null) -> void:
 	if icon:
 		tex_rect.texture = icon
 	if not ok:
-		tex_rect.modulate = Color(0.2, 0.2, 0.2, 1.0)
+		tex_rect.modulate = Color(1.0, 1.0, 1.0, 0.3)
 	hbox.add_child(tex_rect)
 
 	var lbl := Label.new()
 	lbl.add_theme_font_size_override("font_size", 22)
 	lbl.text = text + ("  (OK)" if ok else "")
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	if not ok:
-		lbl.modulate = Color(0.7, 0.7, 0.7, 1.0)
+		lbl.modulate = Color(1.0, 1.0, 1.0, 0.5)
 	hbox.add_child(lbl)
 	
 	list.add_child(hbox)
@@ -116,4 +119,4 @@ func _add_spacer() -> void:
 	list.add_child(s)
 
 func _on_back_pressed() -> void:
-	SceneManager.goto_scene("res://scenes/Menu.tscn")
+	SceneManager.goto_scene("res://scenes/Codex.tscn")

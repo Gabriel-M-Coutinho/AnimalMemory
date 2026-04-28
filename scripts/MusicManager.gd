@@ -19,6 +19,9 @@ func play_ranking_music():
 	# Start at 25.04 seconds.
 	_play_track("res://sounds/soundtrack_ranking.mp3", -12.0, 25.04, 0.0, true)
 
+func play_achievements_music():
+	_play_track("res://sounds/soundtrack_achievements.mp3", -12.0, 0.0)
+
 func _play_track(
 	path: String,
 	volume_db: float = -12.0,

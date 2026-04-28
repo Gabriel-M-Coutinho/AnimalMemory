@@ -64,4 +64,7 @@ func _on_item_list_item_selected(index):
 
 func _on_back_pressed():
 	MusicManager.play_menu_music()
-	get_tree().change_scene_to_file("res://scenes/Menu.tscn")
+	SceneManager.goto_scene("res://scenes/Menu.tscn")
+
+func _on_achievements_pressed():
+	SceneManager.goto_scene("res://scenes/Achievements.tscn")

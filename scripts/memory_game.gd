@@ -98,6 +98,10 @@ func _process(delta: float) -> void:
 func _update_timer_label() -> void:
 	if timer_label:
 		timer_label.text = "Tempo: %d" % int(ceil(time_left))
+		if time_left <= 10.0:
+			timer_label.add_theme_color_override("font_color", Color.RED)
+		else:
+			timer_label.remove_theme_color_override("font_color")
 
 func setup_game(elements: Array):
 	victory_panel.visible = false

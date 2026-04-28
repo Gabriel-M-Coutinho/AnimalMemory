@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/Settings.gd" id="1_settings_script"]
 [ext_resource type="Texture2D" path="res://sprites/music_note.svg" id="2_music_icon"]
+[ext_resource type="Texture2D" path="res://sprites/logout.svg" id="3_logout_icon"]
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -27,6 +28,20 @@ offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
 icon = ExtResource("2_music_icon")
+flat = true
+expand_icon = true
+
+[node name="LogoutButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -80.0
+offset_right = 80.0
+offset_bottom = -20.0
+grow_vertical = 0
+icon = ExtResource("3_logout_icon")
 flat = true
 expand_icon = true
 
@@ -92,5 +107,6 @@ layout_mode = 2
 text = "Fechar"
 
 [connection signal="pressed" from="SettingsButton" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="LogoutButton" to="." method="_on_logout_pressed"]
 [connection signal="value_changed" from="SettingsPanel/Panel/VBoxContainer/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
 [connection signal="pressed" from="SettingsPanel/Panel/VBoxContainer/CloseSettings" to="." method="_on_close_settings_pressed"]

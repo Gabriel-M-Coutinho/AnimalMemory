@@ -114,14 +114,30 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -60.0
+offset_left = -160.0
 offset_top = -80.0
-offset_right = 60.0
+offset_right = -40.0
 offset_bottom = -30.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 20
 text = "Voltar"
+
+[node name="Achievements" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -80.0
+offset_right = 160.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Conquistas"
 
 [node name="Settings" parent="." instance=ExtResource("4_settings")]
 
@@ -129,3 +145,4 @@ text = "Voltar"
 
 [connection signal="item_selected" from="HBoxContainer/ItemList" to="." method="_on_item_list_item_selected"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Achievements" to="." method="_on_achievements_pressed"]

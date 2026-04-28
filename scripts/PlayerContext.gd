@@ -25,6 +25,31 @@ func get_ranking(difficulty: String) -> Array:
 		return []
 	return _ranking_cache[difficulty]
 
+func get_all_users() -> Array:
+	_ensure_ranking_loaded()
+	var names_set = {}
+	for diff in _ranking_cache.keys():
+		if diff == "__users__": continue
+		for entry in _ranking_cache[diff]:
+			if entry.has("name"):
+				names_set[entry["name"]] = true
+	
+	if _ranking_cache.has("__users__"):
+		for u in _ranking_cache["__users__"]:
+			names_set[u] = true
+			
+	var arr = names_set.keys()
+	arr.sort()
+	return arr
+
+func register_user(name: String) -> void:
+	_ensure_ranking_loaded()
+	var arr: Array = _ranking_cache.get("__users__", [])
+	if not name in arr:
+		arr.append(name)
+		_ranking_cache["__users__"] = arr
+		_save_ranking_to_disk(_ranking_cache)
+
 func add_win_score(difficulty: String, score: float) -> int:
 	_ensure_ranking_loaded()
 	var entry := {
@@ -49,6 +74,12 @@ func _find_entry_rank(arr: Array, entry: Dictionary) -> int:
 		if e.get("timestamp_unix") == entry.get("timestamp_unix") and e.get("name") == entry.get("name") and e.get("score") == entry.get("score"):
 			return i + 1
 	return -1
+
+func clear_ranking(difficulty: String) -> void:
+	_ensure_ranking_loaded()
+	if _ranking_cache.has(difficulty):
+		_ranking_cache[difficulty] = []
+		_save_ranking_to_disk(_ranking_cache)
 
 func reset_ranking() -> void:
 	_ranking_cache = {}

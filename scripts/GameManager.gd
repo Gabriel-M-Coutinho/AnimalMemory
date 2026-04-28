@@ -14,7 +14,10 @@ func set_difficulty(difficulty: String):
 	match difficulty:
 		"easy":
 			cards_to_spawn = 4
+			time_limit_seconds = 20.0
 		"medium":
 			cards_to_spawn = 8
+			time_limit_seconds = 30.0
 		"hard":
 			cards_to_spawn = 16
+			time_limit_seconds = 40.0
