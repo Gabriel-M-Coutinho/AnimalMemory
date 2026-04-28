@@ -8,6 +8,8 @@ var current_ranking_page: int = 0
 var current_difficulty_index: int = 0
 
 func _ready() -> void:
+	if MusicManager.has_method("play_menu_music"):
+		MusicManager.play_menu_music()
 	difficulty_option.add_item("Fácil", 0)
 	difficulty_option.add_item("Médio", 1)
 	difficulty_option.add_item("Difícil", 2)

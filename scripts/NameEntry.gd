@@ -7,6 +7,8 @@ extends Control
 var existing_users: Array = []
 
 func _ready() -> void:
+	if MusicManager.has_method("play_menu_music"):
+		MusicManager.play_menu_music()
 	error_label.text = ""
 	existing_users = PlayerContext.get_all_users()
 	

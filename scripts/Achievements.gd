@@ -119,4 +119,6 @@ func _add_spacer() -> void:
 	list.add_child(s)
 
 func _on_back_pressed() -> void:
+	if MusicManager.has_method("play_codex_music"):
+		MusicManager.play_codex_music()
 	SceneManager.goto_scene("res://scenes/Codex.tscn")
