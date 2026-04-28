@@ -135,7 +135,24 @@ func setup_game(elements: Array):
 				card.setup(item)
 				card.card_clicked.connect(_on_card_clicked)
 
-		# (sem prévia; começa direto)
+		# Pré-visualização apenas no modo DIFÍCIL
+		if GameManager.game_difficulty == "hard":
+			can_click = false
+			await get_tree().create_timer(0.8).timeout
+			for card in grid_container.get_children():
+				if card.has_method("flip"):
+					card.flip(true)
+			
+			await get_tree().create_timer(1.5).timeout
+			
+			for card in grid_container.get_children():
+				if card.has_method("flip"):
+					card.flip(false)
+			
+			await get_tree().create_timer(0.5).timeout
+			can_click = true
+		else:
+			can_click = true
 
 func show_message(text: String, color: Color = Color.WHITE, duration: float = 1.0):
 	message_label.text = text

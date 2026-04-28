@@ -36,7 +36,7 @@ offset_right = 180.0
 offset_bottom = 70.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 28
-text = "Álbum do Codex"
+text = "Álbum de Animais"
 horizontal_alignment = 1
 
 [node name="Panel" type="PanelContainer" parent="."]

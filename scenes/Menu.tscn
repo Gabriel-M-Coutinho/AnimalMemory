@@ -92,7 +92,7 @@ text = "Difícil (16 Cartas)"
 [node name="Codex" type="Button" parent="VBoxContainer" unique_id=1101238231]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Ver Codex"
+text = "Ver Animais"
 
 [node name="Exit" type="Button" parent="VBoxContainer" unique_id=20250426]
 layout_mode = 2

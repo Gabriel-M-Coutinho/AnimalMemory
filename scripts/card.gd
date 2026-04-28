@@ -42,48 +42,56 @@ func _apply_sprite() -> void:
 
 	card_sprite.sprite_frames = frames
 
+var _flip_scale: float = 1.0
+
 func flip(show_front: bool) -> void:
-	if is_matched:
+	if is_matched or is_flipped == show_front:
 		return
+	
 	is_flipped = show_front
-	update_visuals()
+	
+	var tween = create_tween()
+	# Animamos apenas o multiplicador de flip, sem mexer no scale real diretamente
+	tween.tween_property(self, "_flip_scale", 0.0, 0.1).set_trans(Tween.TRANS_SINE)
+	tween.tween_callback(update_visuals)
+	tween.tween_property(self, "_flip_scale", 1.0, 0.1).set_trans(Tween.TRANS_SINE)
 
 func update_visuals() -> void:
 	if not card_sprite or not card_sprite.sprite_frames:
 		return
-
-	var anim_w = 64.0
-	var anim_h = 64.0
-
-	if not is_flipped:
-		if card_sprite.sprite_frames.has_animation("cardback"):
-			card_sprite.play("cardback")
-			var tex = card_sprite.sprite_frames.get_frame_texture("cardback", 0)
-			if tex:
-				anim_w = float(tex.get_width())
-				anim_h = float(tex.get_height())
-	else:
+		
+	if is_flipped:
 		if is_matched and card_sprite.sprite_frames.has_animation("movement"):
 			card_sprite.play("movement")
 		elif card_sprite.sprite_frames.has_animation("idle"):
 			card_sprite.play("idle")
-			
-		var card_data = _db.get_card(card_id)
-		if card_data:
-			anim_w = float(card_data.get("frame_width", 64))
-			anim_h = float(card_data.get("frame_height", 64))
+	else:
+		card_sprite.play("cardback")
 
-	if anim_w > 0 and anim_h > 0 and size.x > 0 and size.y > 0:
+	# Cálculo de escala seguro
+	var anim_w = 345.0
+	var anim_h = 522.0
+	
+	var tex = card_sprite.sprite_frames.get_frame_texture(card_sprite.animation, 0)
+	if tex:
+		var tw = tex.get_width()
+		var th = tex.get_height()
+		if tw > 0 and th > 0:
+			anim_w = float(tw)
+			anim_h = float(th)
+
+	if size.x > 0 and size.y > 0:
 		var scale_x = size.x / anim_w
 		var scale_y = size.y / anim_h
-		
-		# Usamos o mesmo fator de escala proporcional para frente e verso.
-		# Isso garante que o verso tenha o mesmo tamanho exato do animal.
 		var scale_factor = min(scale_x, scale_y)
-		card_sprite.scale = Vector2(scale_factor, scale_factor)
+		
+		# Aplicamos o multiplicador de flip apenas no eixo X
+		card_sprite.scale = Vector2(scale_factor * _flip_scale, scale_factor)
 
-	if is_matched:
-		pass # modulate.a = 0.5 removido para não escurecer a carta!
+func _process(_delta: float) -> void:
+	# Mantemos o visual atualizado se o flip estiver acontecendo
+	if _flip_scale < 1.0:
+		update_visuals()
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:

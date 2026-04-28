@@ -55,8 +55,8 @@ func get_sprite_frames(id: String) -> SpriteFrames:
 		push_warning("CardDatabase: Sprite '%s' não pôde ser carregado." % sprite_path)
 		return null
 
-	var frame_w: int = card_data.get("frame_width",  64)
-	var frame_h: int = card_data.get("frame_height", 64)
+	var frame_w: float = float(card_data.get("frame_width",  64))
+	var frame_h: float = float(card_data.get("frame_height", 64))
 	var animations: Dictionary = card_data.get("animations", {})
 
 	var sprite_frames := SpriteFrames.new()
@@ -70,7 +70,18 @@ func get_sprite_frames(id: String) -> SpriteFrames:
 		sprite_frames.add_frame("cardback", back_tex)
 		sprite_frames.set_animation_loop("cardback", false)
 	
-	var cols: int = max(1, int(float(texture.get_width()) / float(frame_w)))
+	# Calcula quantas colunas o spritesheet original deveria ter (assumindo 10 para os animais)
+	# ou calculando baseado no frame_w original de 345 se a largura fosse 3450.
+	# Para ser robusto, vamos assumir que se o texture.width é diferente de frame_w * 10,
+	# então houve um redimensionamento.
+	var original_cols = 10
+	var expected_width = frame_w * original_cols
+	var scale_factor = float(texture.get_width()) / expected_width
+	
+	var real_frame_w = frame_w * scale_factor
+	var real_frame_h = frame_h * scale_factor
+	
+	var cols: int = max(1, int(float(texture.get_width()) / real_frame_w))
 
 	for anim_name in animations:
 		var anim: Dictionary = animations[anim_name]
@@ -92,7 +103,7 @@ func get_sprite_frames(id: String) -> SpriteFrames:
 			
 			var atlas := AtlasTexture.new()
 			atlas.atlas  = texture
-			atlas.region = Rect2(current_col * frame_w, current_row * frame_h, frame_w, frame_h)
+			atlas.region = Rect2(current_col * real_frame_w, current_row * real_frame_h, real_frame_w, real_frame_h)
 			sprite_frames.add_frame(anim_name, atlas)
 
 	return sprite_frames
