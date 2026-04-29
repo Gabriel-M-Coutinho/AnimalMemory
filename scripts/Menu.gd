@@ -3,6 +3,7 @@ extends Control
 @onready var ranking_text: RichTextLabel = $RankingPanel/MarginContainer/VBoxContainer/RankingText
 @onready var difficulty_option: OptionButton = $RankingPanel/MarginContainer/VBoxContainer/DifficultyOption
 @onready var page_label: Label = $RankingPanel/MarginContainer/VBoxContainer/PaginationRow/PageLabel
+@onready var exit_button: Button = $VBoxContainer/Exit
 
 var current_ranking_page: int = 0
 var current_difficulty_index: int = 0
@@ -14,6 +15,9 @@ func _ready() -> void:
 	difficulty_option.add_item("Médio", 1)
 	difficulty_option.add_item("Difícil", 2)
 	_refresh_ranking(0)
+	# Esconde o botão Sair no navegador — quit() trava a aba
+	if OS.get_name() == "Web":
+		exit_button.visible = false
 
 func _on_difficulty_option_item_selected(index: int) -> void:
 	_refresh_ranking(index)
@@ -99,4 +103,6 @@ func _on_logout_pressed():
 	SceneManager.goto_scene("res://scenes/NameEntry.tscn")
 
 func _on_exit_pressed():
+	if OS.get_name() == "Web":
+		return # Sair não faz sentido no navegador
 	get_tree().quit()

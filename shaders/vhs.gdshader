@@ -37,33 +37,21 @@ uniform bool clip_warp = false;
 uniform float vignette_intensity = 0.4; 
 uniform float vignette_opacity : hint_range(0.0, 1.0) = 0.5;
 
-vec2 random(vec2 uv){
-    uv = vec2( dot(uv, vec2(127.1,311.7) ),
-               dot(uv, vec2(269.5,183.3) ) );
-    return -1.0 + 2.0 * fract(sin(uv) * 43758.5453123);
-}
-
-float noise(vec2 uv) {
-    vec2 uv_index = floor(uv);
-    vec2 uv_fract = fract(uv);
-    vec2 blur = smoothstep(0.0, 1.0, uv_fract);
-    return mix( mix( dot( random(uv_index + vec2(0.0,0.0) ), uv_fract - vec2(0.0,0.0) ),
-                     dot( random(uv_index + vec2(1.0,0.0) ), uv_fract - vec2(1.0,0.0) ), blur.x),
-                mix( dot( random(uv_index + vec2(0.0,1.0) ), uv_fract - vec2(0.0,1.0) ),
-                     dot( random(uv_index + vec2(1.0,1.0) ), uv_fract - vec2(1.0,1.0) ), blur.x), blur.y) * 0.5 + 0.5;
+// Use a simpler random function for better compatibility
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
 vec2 warp(vec2 uv){
 	vec2 delta = uv - 0.5;
 	float delta2 = dot(delta.xy, delta.xy);
-	float delta4 = delta2 * delta2;
-	float delta_offset = delta4 * warp_amount;
+	float delta_offset = delta2 * warp_amount; // Simplified from delta4
 	return uv + delta * delta_offset;
 }
 
 float border (vec2 uv){
 	float radius = min(warp_amount, 0.08);
-	radius = max(min(min(abs(radius * 2.0), abs(1.0)), abs(1.0)), 1e-5);
+	if (radius <= 0.0) return 1.0;
 	vec2 abs_uv = abs(uv * 2.0 - 1.0) - vec2(1.0, 1.0) + radius;
 	float dist = length(max(vec2(0.0), abs_uv)) / radius;
 	float square = smoothstep(0.96, 1.0, dist);
@@ -72,82 +60,67 @@ float border (vec2 uv){
 
 float vignette(vec2 uv){
 	uv *= 1.0 - uv.xy;
-	float vignette = uv.x * uv.y * 15.0;
-	return pow(vignette, vignette_intensity * vignette_opacity);
+	float v = uv.x * uv.y * 15.0;
+	return pow(clamp(v, 0.0, 1.0), vignette_intensity * vignette_opacity);
 }
 
 void fragment()
 {
+	// Detect resolution if not set properly
+	vec2 res = resolution;
+	if (res.x <= 1.0) res = 1.0 / SCREEN_PIXEL_SIZE;
+	
 	vec2 uv = warp(SCREEN_UV); 
 	vec2 text_uv = uv;
-	vec2 roll_uv = vec2(0.0);
 	float time = roll ? TIME : 0.0;
 	
 	if (pixelate)
 	{
-		text_uv = ceil(uv * resolution) / resolution;
+		text_uv = floor(uv * res) / res;
 	}
 	
 	float roll_line = 0.0;
-	if (roll || noise_opacity > 0.0)
+	vec2 roll_uv = vec2(0.0);
+	if (roll)
 	{
 		roll_line = smoothstep(0.3, 0.9, sin(uv.y * roll_size - (time * roll_speed) ) );
 		roll_line *= roll_line * smoothstep(0.3, 0.9, sin(uv.y * roll_size * roll_variation - (time * roll_speed * roll_variation) ) );
-		roll_uv = vec2(( roll_line * distort_intensity * (1.-SCREEN_UV.x)), 0.0);
+		roll_uv = vec2(( roll_line * distort_intensity * (1.0-uv.x)), 0.0);
 	}
 	
 	vec4 text;
-	if (roll)
-	{
-		text.r = texture(SCREEN_TEXTURE, text_uv + roll_uv * 0.8 + vec2(aberration, 0.0) * .1).r;
-		text.g = texture(SCREEN_TEXTURE, text_uv + roll_uv * 1.2 - vec2(aberration, 0.0) * .1 ).g;
-		text.b = texture(SCREEN_TEXTURE, text_uv + roll_uv).b;
-		text.a = 1.0;
-	}
-	else
-	{
-		text.r = texture(SCREEN_TEXTURE, text_uv + vec2(aberration, 0.0) * .1).r;
-		text.g = texture(SCREEN_TEXTURE, text_uv - vec2(aberration, 0.0) * .1).g;
-		text.b = texture(SCREEN_TEXTURE, text_uv).b;
-		text.a = 1.0;
-	}
-	
-	float r = text.r;
-	float g = text.g;
-	float b = text.b;
-	
-	uv = warp(SCREEN_UV);
+	text.r = texture(SCREEN_TEXTURE, text_uv + roll_uv * 0.8 + vec2(aberration, 0.0) * .1).r;
+	text.g = texture(SCREEN_TEXTURE, text_uv + roll_uv * 1.2 - vec2(aberration, 0.0) * .1 ).g;
+	text.b = texture(SCREEN_TEXTURE, text_uv + roll_uv).b;
+	text.a = 1.0;
 	
 	if (grille_opacity > 0.0){
-		float g_r = smoothstep(0.85, 0.95, abs(sin(uv.x * (resolution.x * 3.14159265))));
-		r = mix(r, r * g_r, grille_opacity);
-		float g_g = smoothstep(0.85, 0.95, abs(sin(1.05 + uv.x * (resolution.x * 3.14159265))));
-		g = mix(g, g * g_g, grille_opacity);
-		float b_b = smoothstep(0.85, 0.95, abs(sin(2.1 + uv.x * (resolution.x * 3.14159265))));
-		b = mix(b, b * b_b, grille_opacity);
+		float g_r = smoothstep(0.85, 0.95, abs(sin(uv.x * (res.x * 3.14159))));
+		text.r = mix(text.r, text.r * g_r, grille_opacity);
+		float g_g = smoothstep(0.85, 0.95, abs(sin(1.05 + uv.x * (res.x * 3.14159))));
+		text.g = mix(text.g, text.g * g_g, grille_opacity);
+		float b_b = smoothstep(0.85, 0.95, abs(sin(2.1 + uv.x * (res.x * 3.14159))));
+		text.b = mix(text.b, text.b * b_b, grille_opacity);
 	}
 	
-	text.r = clamp(r * brightness, 0.0, 1.0);
-	text.g = clamp(g * brightness, 0.0, 1.0);
-	text.b = clamp(b * brightness, 0.0, 1.0);
+	text.rgb = clamp(text.rgb * brightness, 0.0, 1.0);
 	
-	float scanlines = 0.5;
 	if (scanlines_opacity > 0.0)
 	{
-		scanlines = smoothstep(scanlines_width, scanlines_width + 0.5, abs(sin(uv.y * (resolution.y * 3.14159265))));
-		text.rgb = mix(text.rgb, text.rgb * vec3(scanlines), scanlines_opacity);
+		float scanline = smoothstep(scanlines_width, scanlines_width + 0.5, abs(sin(uv.y * (res.y * 3.14159))));
+		text.rgb = mix(text.rgb, text.rgb * scanline, scanlines_opacity);
 	}
 	
 	if (noise_opacity > 0.0)
 	{
-		float noise = smoothstep(0.4, 0.5, noise(uv * vec2(2.0, 200.0) + vec2(10.0, (TIME * (noise_speed))) ) );
-		roll_line *= noise * scanlines * clamp(random((ceil(uv * resolution) / resolution) + vec2(TIME * 0.8, 0.0)).x + 0.8, 0.0, 1.0);
-		text.rgb = clamp(mix(text.rgb, text.rgb + roll_line, noise_opacity), vec3(0.0), vec3(1.0));
+		// Simpler noise
+		float n = rand(uv + vec2(time * 0.1, time * 0.2));
+		text.rgb = mix(text.rgb, text.rgb + (n - 0.5) * 0.1, noise_opacity);
 	}
 	
 	if (static_noise_intensity > 0.0)
 	{
-		text.rgb += clamp(random((ceil(uv * resolution) / resolution) + fract(TIME)).x, 0.0, 1.0) * static_noise_intensity;
+		text.rgb += (rand(text_uv + fract(TIME)) - 0.5) * static_noise_intensity;
 	}
 	
 	text.rgb *= border(uv);
@@ -155,12 +128,8 @@ void fragment()
 	
 	if (discolor)
 	{
-		float saturation = 0.5;
-		float contrast = 1.2;
-		vec3 greyscale = vec3(text.r + text.g + text.b) / 3.;
-		text.rgb = mix(text.rgb, greyscale, saturation);
-		float midpoint = pow(0.5, 2.2);
-		text.rgb = (text.rgb - vec3(midpoint)) * contrast + midpoint;
+		float greyscale = dot(text.rgb, vec3(0.299, 0.587, 0.114));
+		text.rgb = mix(text.rgb, vec3(greyscale), 0.3); // Fixed saturation
 	}
 	
 	COLOR = text;

@@ -42,18 +42,24 @@ func _apply_sprite() -> void:
 
 	card_sprite.sprite_frames = frames
 
-var _flip_scale: float = 1.0
+var _flip_scale: float = 1.0:
+	set(v):
+		_flip_scale = v
+		update_visuals()
 
 func flip(show_front: bool) -> void:
 	if is_matched or is_flipped == show_front:
 		return
 	
-	is_flipped = show_front
-	
 	var tween = create_tween()
-	# Animamos apenas o multiplicador de flip, sem mexer no scale real diretamente
+	# Primeiro encolhemos a carta (mostrando o estado atual)
 	tween.tween_property(self, "_flip_scale", 0.0, 0.1).set_trans(Tween.TRANS_SINE)
-	tween.tween_callback(update_visuals)
+	# No meio do caminho, trocamos o estado e atualizamos o visual
+	tween.tween_callback(func():
+		is_flipped = show_front
+		update_visuals()
+	)
+	# Depois expandimos novamente (mostrando o novo estado)
 	tween.tween_property(self, "_flip_scale", 1.0, 0.1).set_trans(Tween.TRANS_SINE)
 
 func update_visuals() -> void:
@@ -72,7 +78,11 @@ func update_visuals() -> void:
 	var anim_w = 345.0
 	var anim_h = 522.0
 	
-	var tex = card_sprite.sprite_frames.get_frame_texture(card_sprite.animation, 0)
+	var anim_to_check = card_sprite.animation
+	if not card_sprite.sprite_frames.has_animation(anim_to_check):
+		anim_to_check = "default"
+		
+	var tex = card_sprite.sprite_frames.get_frame_texture(anim_to_check, 0)
 	if tex:
 		var tw = tex.get_width()
 		var th = tex.get_height()
@@ -86,12 +96,7 @@ func update_visuals() -> void:
 		var scale_factor = min(scale_x, scale_y)
 		
 		# Aplicamos o multiplicador de flip apenas no eixo X
-		card_sprite.scale = Vector2(scale_factor * _flip_scale, scale_factor)
-
-func _process(_delta: float) -> void:
-	# Mantemos o visual atualizado se o flip estiver acontecendo
-	if _flip_scale < 1.0:
-		update_visuals()
+		card_sprite.scale = Vector2(scale_factor * abs(_flip_scale), scale_factor)
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:

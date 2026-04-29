@@ -50,7 +50,7 @@ func _ready():
 	sfx_player_victory.volume_db = -10.0
 	sfx_player_fail.volume_db = -10.0
 
-	_start_timer()
+	# Timer é iniciado pelo setup_game() após a pré-visualização
 
 	randomize()
 	var all_ids = CardDatabase.get_all_ids()
@@ -80,6 +80,13 @@ func _start_timer() -> void:
 	time_left = GameManager.time_limit_seconds
 	_update_timer_label()
 	set_process(true)
+
+func _pause_timer() -> void:
+	set_process(false)
+
+func _resume_timer() -> void:
+	if not _ended:
+		set_process(true)
 
 func _process(delta: float) -> void:
 	if _ended:
@@ -111,11 +118,15 @@ func setup_game(elements: Array):
 	total_pairs = elements.size()
 	matches_found = 0
 	flipped_cards.clear()
-	can_click = true
-	_start_timer()
+	can_click = false
+	_ended = false
 	_hint_cooldown_left = 0.0
 	_hints_used_this_run = 0
 	_update_hint_button()
+	# Não inicia o timer ainda — ele começa só após a pré-visualização
+	_pause_timer()
+	time_left = GameManager.time_limit_seconds
+	_update_timer_label()
 	
 	if grid_container:
 		for child in grid_container.get_children():
@@ -135,24 +146,28 @@ func setup_game(elements: Array):
 				card.setup(item)
 				card.card_clicked.connect(_on_card_clicked)
 
-		# Pré-visualização apenas no modo DIFÍCIL
-		if GameManager.game_difficulty == "hard":
-			can_click = false
-			await get_tree().create_timer(0.8).timeout
-			for card in grid_container.get_children():
-				if card.has_method("flip"):
-					card.flip(true)
-			
-			await get_tree().create_timer(1.5).timeout
-			
-			for card in grid_container.get_children():
-				if card.has_method("flip"):
-					card.flip(false)
-			
-			await get_tree().create_timer(0.5).timeout
-			can_click = true
-		else:
-			can_click = true
+		# Pré-visualização: cartas aparecem abertas para o jogador memorizar
+		await get_tree().create_timer(0.5).timeout
+		
+		show_message("Memorize!", Color.CYAN, 99.0)
+		
+		for card in grid_container.get_children():
+			if card.has_method("flip"):
+				card.flip(true)
+		
+		await get_tree().create_timer(2.0).timeout
+		
+		message_label.text = ""
+		
+		for card in grid_container.get_children():
+			if card.has_method("flip"):
+				card.flip(false)
+		
+		# Espera as cartas terminarem de virar antes de começar o jogo
+		await get_tree().create_timer(0.4).timeout
+		show_message("Vai!", Color.GREEN_YELLOW, 0.8)
+		_resume_timer()
+		can_click = true
 
 func show_message(text: String, color: Color = Color.WHITE, duration: float = 1.0):
 	message_label.text = text

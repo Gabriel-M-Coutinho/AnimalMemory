@@ -1,6 +1,6 @@
 extends Node
 
-const DEFAULT_PLAYER_NAME := "Jogador"
+const DEFAULT_PLAYER_NAME := "Jogador(a) 1"
 const RANKING_PATH := "user://ranking.json"
 const MAX_ENTRIES_PER_DIFFICULTY := 10
 
@@ -18,6 +18,13 @@ func _ensure_ranking_loaded() -> void:
 	if not _ranking_cache.is_empty():
 		return
 	_ranking_cache = _load_ranking_from_disk()
+	
+	# Ensure default user exists
+	var users: Array = _ranking_cache.get("__users__", [])
+	if not DEFAULT_PLAYER_NAME in users:
+		users.append(DEFAULT_PLAYER_NAME)
+		_ranking_cache["__users__"] = users
+		_save_ranking_to_disk(_ranking_cache)
 
 func get_ranking(difficulty: String) -> Array:
 	_ensure_ranking_loaded()
@@ -28,11 +35,6 @@ func get_ranking(difficulty: String) -> Array:
 func get_all_users() -> Array:
 	_ensure_ranking_loaded()
 	var names_set = {}
-	for diff in _ranking_cache.keys():
-		if diff == "__users__": continue
-		for entry in _ranking_cache[diff]:
-			if entry.has("name"):
-				names_set[entry["name"]] = true
 	
 	if _ranking_cache.has("__users__"):
 		for u in _ranking_cache["__users__"]:

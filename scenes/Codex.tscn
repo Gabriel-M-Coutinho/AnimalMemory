@@ -84,13 +84,37 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 20
 
-[node name="ImageContainer" type="Control" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox"]
-custom_minimum_size = Vector2(150, 0)
+[node name="ImageColumn" type="VBoxContainer" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox"]
+custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 8
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ImageContainer"]
-position = Vector2(75, 120)
-scale = Vector2(0.4, 0.4)
+[node name="ImageContainer" type="Control" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ImageColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ImageColumn/ImageContainer"]
+position = Vector2(0, 0)
+scale = Vector2(0.9, 0.9)
+
+[node name="SpeechRow" type="HBoxContainer" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ImageColumn"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 8
+visible = false
+
+[node name="ListenButton" type="Button" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ImageColumn/SpeechRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(90, 30)
+theme_override_font_sizes/font_size = 14
+text = "Ouvir"
+
+[node name="StopButton" type="Button" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ImageColumn/SpeechRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(75, 30)
+theme_override_font_sizes/font_size = 14
+text = "Parar"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox"]
 layout_mode = 2
@@ -146,3 +170,5 @@ text = "Conquistas"
 [connection signal="item_selected" from="HBoxContainer/ItemList" to="." method="_on_item_list_item_selected"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="Achievements" to="." method="_on_achievements_pressed"]
+[connection signal="pressed" from="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ImageColumn/SpeechRow/ListenButton" to="." method="_on_listen_pressed"]
+[connection signal="pressed" from="HBoxContainer/DetailPanel/VBoxContainer/ContentHBox/ImageColumn/SpeechRow/StopButton" to="." method="_on_stop_pressed"]

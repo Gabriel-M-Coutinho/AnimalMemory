@@ -7,6 +7,34 @@ var master_volume_linear: float = 0.5
 func _ready() -> void:
 	_load()
 	_apply_audio()
+	_setup_web_fixes()
+
+func _setup_web_fixes() -> void:
+	if OS.get_name() == "Web":
+		# 1. Force Landscape if possible
+		JavaScriptBridge.eval("""
+			function tryLockOrientation() {
+				if (screen.orientation && screen.orientation.lock) {
+					screen.orientation.lock('landscape').catch(e => console.log('Orientation lock failed:', e));
+				}
+			}
+			tryLockOrientation();
+			window.addEventListener('click', tryLockOrientation, { once: true });
+			window.addEventListener('touchstart', tryLockOrientation, { once: true });
+		""")
+		
+		# 2. Fix for LineEdit focus on some browsers
+		# This helps Godot capture focus more reliably
+		JavaScriptBridge.eval("""
+			window.addEventListener('mouseup', function() {
+				// Small delay to let Godot process its own events
+				setTimeout(() => {
+					if (document.activeElement && document.activeElement.tagName === 'CANVAS') {
+						document.activeElement.focus();
+					}
+				}, 50);
+			});
+		""")
 
 func set_master_volume_linear(v: float) -> void:
 	master_volume_linear = clampf(v, 0.0, 1.0)

@@ -1,7 +1,7 @@
 extends Control
 
 @export var columns_desktop: int = 4
-@export var columns_mobile: int = 2
+@export var columns_mobile: int = 3
 
 @onready var grid: GridContainer = $Panel/VBoxContainer/ScrollContainer/Grid
 @onready var detail_panel: PanelContainer = $DetailPanel
@@ -27,7 +27,7 @@ func _build_grid() -> void:
 
 	for id in ids:
 		var btn := Button.new()
-		btn.custom_minimum_size = Vector2(170, 170)
+		btn.custom_minimum_size = Vector2(220, 220)
 		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		btn.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		btn.focus_mode = Control.FOCUS_NONE
@@ -41,7 +41,7 @@ func _build_grid() -> void:
 		btn.add_child(vb)
 
 		var tex_rect := TextureRect.new()
-		tex_rect.custom_minimum_size = Vector2(120, 120)
+		tex_rect.custom_minimum_size = Vector2(160, 160)
 		tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		tex_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 		tex_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
