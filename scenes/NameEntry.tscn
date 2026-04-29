@@ -70,13 +70,13 @@ autowrap_mode = 2
 self_modulate = Color(0.85, 0.75, 0.65, 1)
 layout_mode = 2
 size_flags_horizontal = 4
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(220, 45)
 theme_override_font_sizes/font_size = 18
 
 [node name="NameEdit" type="LineEdit" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(220, 45)
 placeholder_text = "Nome"
 max_length = 20
 

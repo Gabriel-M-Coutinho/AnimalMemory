@@ -13,7 +13,8 @@ func play_menu_music():
 	_play_track("res://sounds/menu_background.mp3", -16.0, 0.0)
 
 func play_codex_music():
-	_play_track("res://sounds/codex_sound.mp3", -12.0, 0.0)
+	# Use menu music but much quieter so narration is clear
+	_play_track("res://sounds/menu_background.mp3", -24.0, 0.0)
 
 func play_ranking_music():
 	# Start at 25.04 seconds.
@@ -30,6 +31,7 @@ func _play_track(
 	force_restart: bool = false
 ):
 	if current_track == path and not force_restart:
+		bg_music_player.volume_db = volume_db
 		return
 	
 	var stream = load(path)

@@ -23,24 +23,30 @@ func _ready() -> void:
 			default_index = i + 1
 	
 	user_select.item_selected.connect(_on_user_selected)
+	name_edit.focus_entered.connect(_on_name_edit_focus_entered)
+	name_edit.text_changed.connect(_on_name_edit_text_changed)
 	
 	if default_index != -1:
 		user_select.selected = default_index
 		_on_user_selected(default_index)
-	else:
+	
+	# Always grab focus at start with a small delay for reliability
+	await get_tree().process_frame
+	name_edit.grab_focus()
+	# For some environments (mobile/web), a bit more time helps
+	await get_tree().create_timer(0.1).timeout
+	if is_inside_tree() and not name_edit.has_focus():
 		name_edit.grab_focus()
 
 func _on_user_selected(index: int) -> void:
+	# Now the box is always editable, selecting just pre-fills it
+	name_edit.editable = true
 	if index == 0:
 		name_edit.text = ""
-		name_edit.editable = true
-		name_edit.grab_focus()
-		# For mobile web, sometimes we need to wait a bit
-		await get_tree().create_timer(0.1).timeout
-		name_edit.grab_focus()
 	else:
 		name_edit.text = existing_users[index - 1]
-		name_edit.editable = false
+	
+	name_edit.grab_focus()
 
 func _on_continue_pressed() -> void:
 	var name_input = name_edit.text.strip_edges()
@@ -58,3 +64,15 @@ func _on_continue_pressed() -> void:
 
 func _on_name_edit_text_submitted(_new_text: String) -> void:
 	_on_continue_pressed()
+
+func _on_name_edit_focus_entered() -> void:
+	# Select all text so it's easy to overwrite if they want a new player
+	name_edit.select_all()
+
+func _on_name_edit_text_changed(new_text: String) -> void:
+	# If the user is typing something that doesn't match the selected profile,
+	# switch the dropdown to "Novo Usuário..." automatically
+	if user_select.selected != 0:
+		var selected_name = existing_users[user_select.selected - 1]
+		if new_text != selected_name:
+			user_select.selected = 0

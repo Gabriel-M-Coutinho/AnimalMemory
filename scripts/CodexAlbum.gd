@@ -10,9 +10,14 @@ extends Control
 @onready var detail_label: RichTextLabel = $DetailPanel/Margin/VBoxContainer/ContentHBox/ScrollContainer/DetailLabel
 @onready var detail_progress: Label = $DetailPanel/Margin/VBoxContainer/ProgressLabel
 
+var narration_player: AudioStreamPlayer
+
 var _current_id: String = ""
 
 func _ready() -> void:
+	narration_player = AudioStreamPlayer.new()
+	add_child(narration_player)
+	
 	MusicManager.play_codex_music()
 	_build_grid()
 	_hide_detail()
@@ -110,6 +115,9 @@ func _show_detail(id: String) -> void:
 
 	var count := ProgressManager.get_card_count(id)
 	detail_progress.text = "Encontrado: %dx" % count
+	
+	if unlocked:
+		_play_animal_narration(id)
 
 func _build_details_bbcode(card_data: Dictionary) -> String:
 	var details = "[color=#0055aa]Espécie:[/color] %s\n" % card_data.get("species", "???")
@@ -121,8 +129,29 @@ func _build_details_bbcode(card_data: Dictionary) -> String:
 	return details
 
 func _hide_detail() -> void:
+	if narration_player and narration_player.playing:
+		narration_player.stop()
 	detail_panel.visible = false
 	_current_id = ""
+
+func _play_animal_narration(id: String) -> void:
+	# Mapping IDs to plural filenames in sounds/
+	var sound_file = id
+	match id:
+		"abelha": sound_file = "abelhas"
+		"beijaflor": sound_file = "beijaflores"
+		"cachorro": sound_file = "cachorros"
+		"elefante": sound_file = "elefantes"
+		"gato": sound_file = "gatos"
+		"joaninha": sound_file = "joaninhas"
+		"leao": sound_file = "leoes"
+		"pato": sound_file = "patos"
+	
+	var path = "res://sounds/%s.mp3" % sound_file
+	var stream = load(path)
+	if stream:
+		narration_player.stream = stream
+		narration_player.play()
 
 func _on_close_detail_pressed() -> void:
 	_hide_detail()

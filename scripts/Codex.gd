@@ -11,6 +11,8 @@ extends Control
 
 var _is_web: bool = false
 var _last_speech_text: String = ""
+var _current_id: String = ""
+var narration_player: AudioStreamPlayer
 
 func _ready():
 	_is_web = OS.get_name() == "Web"
@@ -19,13 +21,14 @@ func _ready():
 	# This signal is also connected in the scene file; guard against double-connect.
 	if not item_list.item_selected.is_connected(_on_item_list_item_selected):
 		item_list.item_selected.connect(_on_item_list_item_selected)
+	
+	narration_player = AudioStreamPlayer.new()
+	add_child(narration_player)
+	
 	MusicManager.play_codex_music()
 	animated_sprite.visible = false
-	# Botões ficam escondidos até um animal ser selecionado
+	# Botões agora mostrados para todos os sistemas
 	speech_row.visible = false
-	# Pré-carrega as vozes do navegador (Chrome precisa disso na primeira vez)
-	if _is_web:
-		JavaScriptBridge.eval("window.speechSynthesis.getVoices();")
 
 func _fix_hover_style():
 	# Sobrescreve o fundo do hover com azul semitransparente,
@@ -85,62 +88,46 @@ func _on_item_list_item_selected(index):
 		_last_speech_text = "%s! %s Que incrivel! Alem disso, %s E sabe o que mais? %s Que legal!" % [
 			nome, curiosidade, super_poder, o_que_gosta
 		]
-		if _is_web:
-			speech_row.visible = true
+		_current_id = selected_id
+		speech_row.visible = true
+		_play_animal_narration(selected_id)
+
+func _play_animal_narration(id: String) -> void:
+	var sound_file = id
+	match id:
+		"abelha": sound_file = "abelhas"
+		"beijaflor": sound_file = "beijaflores"
+		"cachorro": sound_file = "cachorros"
+		"elefante": sound_file = "elefantes"
+		"gato": sound_file = "gatos"
+		"joaninha": sound_file = "joaninhas"
+		"leao": sound_file = "leoes"
+		"pato": sound_file = "patos"
+	
+	var path = "res://sounds/%s.mp3" % sound_file
+	var stream = load(path)
+	if stream:
+		narration_player.stream = stream
+		narration_player.play()
 
 func _speak_animal(_card_data: Dictionary) -> void:
-	pass # Mantido para compatibilidade — a fala agora só é acionada pelo botão
-
-func _do_speak(text: String) -> void:
-	if not _is_web:
-		return
-	# Passa o texto via variável global para evitar problemas de escape de aspas
-	JavaScriptBridge.eval("window.__tts_text = %s;" % JSON.stringify(text))
-	JavaScriptBridge.eval("""
-		(function() {
-			window.speechSynthesis.cancel();
-			var utter = new SpeechSynthesisUtterance(window.__tts_text);
-			utter.lang = 'pt-BR';
-			utter.rate = 0.92;
-			utter.pitch = 1.5;
-			function trySpeak() {
-				var voices = window.speechSynthesis.getVoices();
-				var preferred = null;
-				// Prioridade: Google pt-BR > qualquer pt-BR > qualquer pt
-				preferred = voices.find(function(v) {
-					return v.lang === 'pt-BR' && v.name.toLowerCase().includes('google');
-				});
-				if (!preferred) preferred = voices.find(function(v) { return v.lang === 'pt-BR'; });
-				if (!preferred) preferred = voices.find(function(v) { return v.lang.startsWith('pt'); });
-				if (preferred) utter.voice = preferred;
-				window.speechSynthesis.speak(utter);
-			}
-			// Chrome carrega vozes de forma assincrona na primeira vez
-			if (window.speechSynthesis.getVoices().length === 0) {
-				window.speechSynthesis.addEventListener('voiceschanged', trySpeak, { once: true });
-			} else {
-				trySpeak();
-			}
-		})();
-	""")
+	pass # Mantido para compatibilidade
 
 func _on_listen_pressed() -> void:
-	if _last_speech_text != "":
-		_do_speak(_last_speech_text)
+	if _current_id != "":
+		_play_animal_narration(_current_id)
 
 func _on_stop_pressed() -> void:
-	if not _is_web:
-		return
-	JavaScriptBridge.eval("window.speechSynthesis.cancel();")
+	if narration_player and narration_player.playing:
+		narration_player.stop()
 
 func _on_back_pressed():
-	# Para a fala ao sair da cena
-	if _is_web:
-		JavaScriptBridge.eval("window.speechSynthesis.cancel();")
+	if narration_player and narration_player.playing:
+		narration_player.stop()
 	MusicManager.play_menu_music()
 	SceneManager.goto_scene("res://scenes/Menu.tscn")
 
 func _on_achievements_pressed():
-	if _is_web:
-		JavaScriptBridge.eval("window.speechSynthesis.cancel();")
+	if narration_player and narration_player.playing:
+		narration_player.stop()
 	SceneManager.goto_scene("res://scenes/Achievements.tscn")
